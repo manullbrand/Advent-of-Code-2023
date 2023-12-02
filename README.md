@@ -1,6 +1,6 @@
-# Advent of Code [Year] Solutions 🎄🌟
+# Advent of Code [2023] Solutions 🎄🌟
 
-This repository contains my solutions to the Advent of Code [Year] challenges in JavaScript. Each day's solution is organized into its own directory (e.g., `day01`, `day02`, etc.).
+This repository contains my solutions to the Advent of Code [2023] challenges in JavaScript. Each day's solution is organized into its own directory (e.g., `day01`, `day02`, etc.).
 
 ## Table of Contents 📜
 
