@@ -1023,3 +1023,4 @@ const sum = concatenando.reduce((accumulator, currentValue) => {
 }, 0);
 
 console.log(sum);
+// Done. Result = 53334

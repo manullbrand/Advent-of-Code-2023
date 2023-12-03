@@ -1011,7 +1011,7 @@ for (let i = 0; i < 1000; i++) {
   calibrationFindNumber.push(nova);
 }
 
-// let tentativa = calibrationFindNumber[0].toString().replace(/four/g, 4)// tranformando essa palavra em string para poder usar o método replace, e substituir uma string por seu correspondente numérico.
+// tranformando essa palavra em string para poder usar o método replace, e substituir uma string por seu correspondente numérico.
 const StringtoNumber = (str) => {
   switch (str) {
     case "one":
@@ -1036,7 +1036,27 @@ const StringtoNumber = (str) => {
       return str;
   }
 };
+ 
+let stringArray = []
 
-let tentativa = calibrationFindNumber[0].map(StringtoNumber);
+for (let index in calibrationFindNumber) {
+  let novaArray = calibrationFindNumber[index].map(StringtoNumber).toString()
+  stringArray.push(novaArray)
+}
 
-console.log(tentativa);
+let onlyFirst = stringArray.map((index) => index.slice(0, 1)); //pega apenas o primeiro caracter da string (no caso, justamente o primeiro numero, que é o que quero), e me retorna um array com apenas esses numeros.
+let onlyLast = stringArray.map((index) => index.slice(-1)); //pega apenas o último caracter da string (no caso, justamente o último numero, que é o que quero), e me retorna um array com apenas esses numeros.
+
+let concating = [];
+
+for (let i = 0; i < 1000; i++) {
+  let nova = parseInt(onlyFirst[i] + onlyLast[i]);
+  concating.push(nova);
+}
+
+const sum = concating.reduce((accumulator, currentValue) => {
+  return accumulator + currentValue;
+}, 0);
+
+console.log(sum);
+//Done. Result = 52834
