@@ -99,62 +99,326 @@ Game 98: 1 green, 12 blue, 4 red; 8 blue, 5 red, 1 green; 1 green, 8 blue, 7 red
 Game 99: 1 blue, 2 green, 2 red; 2 red, 8 green; 14 green, 1 blue; 1 red, 2 green; 1 blue, 1 green, 2 red; 6 green, 2 red
 Game 100: 6 green, 15 red, 12 blue; 9 red; 16 red; 17 red, 3 blue, 7 green`;
 
-let puzzleList = inputPuzzle.split("\n");
+let puzzleList = inputPuzzle.replace(/\Game\s+\d{1,2}\:/g, "").split("\n");
+console.log(puzzleList);
 
-let Blues = [];
-for (let blues in puzzleList) {
-  let regex = puzzleList[blues].match(/(\d*\s+blue)/g);
+let subsetsGames = [];
+for (index in puzzleList) {
+  let newArray = puzzleList[index].split(";");
 
-  Blues.push(regex);
+  subsetsGames.push(newArray);
 }
 
-let BluesString = [];
-for (let index in Blues) {
-  let newRegex = Blues[index].toString().match(/\d{1,2}/g);
+console.log(subsetsGames);
 
-  BluesString.push(newRegex);
+let subsetsGamesArray = [];
+for (index in subsetsGames) {
+  let newArray = subsetsGames[index].map((str) => str.split(","));
+
+  subsetsGamesArray.push(newArray);
 }
+//console.log(subsetsGamesArray);
 
-let BluesNumbers = [];
-for (index in BluesString) {
-  let newArray = BluesString[index].map((item) => parseInt(item));
-  BluesNumbers.push(newArray);
-}
+//BLUES
 
-let socorroBlues = [];
-for (index in BluesNumbers) {
-  let sumBlues = BluesNumbers[index].reduce((accumulator, currentValue) => {
-    return accumulator + currentValue;
-  }, 0);
+// let testNumbers = [];
+// const maxValue = 14;
+// const regexNumber = /\b(\d+)\b/g;
 
-  socorroBlues.push(sumBlues);
-}
+// for (let i = 0; i < subsetsGamesArray.length; i++) {
+//   let filteredSubarray = subsetsGamesArray[i].map(innerArray =>
+//     innerArray.filter(str => {
+//       const match = str.match(regexNumber);
+//       if (match) {
+//         const number = parseInt(match[0], 10);
 
-// console.log(socorroBlues.indexOf(17));
+//         return number < maxValue;
+//       }
+//       return false;
+//     })
+//   );
 
-let agoraVaiBlues = [];
-for (i in socorroBlues) {
-  let aiai = socorroBlues[i].valueOf()
-  console.log(aiai)
-  if (aiai < 13) {
-    console.log(socorroBlues.indexOf(aiai));
+//   if (filteredSubarray.some(subarray => subarray.length > 0)) {
+//     testNumbers.push(filteredSubarray);
+//   }
+// }
+
+// console.log(testNumbers)
+
+let testNumbers = [];
+// const maxValue = 14;
+const maxValueBlue = 14;
+const maxValueGreen = 13;
+const maxValueRed = 12;
+const regexNumberBlue = /\b(\d+\sblue)\b/g;
+const regexNumberGreen = /\b(\d+\sgreen)\b/g;
+const regexNumberRed = /\b(\d+\sred)\b/g;
+
+for (let i = 0; i < subsetsGamesArray.length; i++) {
+  let filteredSubarray = subsetsGamesArray[i].map((innerArray) =>
+    innerArray.filter((str) => {
+      const matchBlue = str.match(regexNumberBlue);
+      const matchGreen = str.match(regexNumberGreen);
+      const matchRed = str.match(regexNumberRed);
+      if (matchBlue) {
+        const number = parseInt(matchBlue[0], 10);
+        return number <= maxValueBlue;
+        
+      } if (matchGreen) {
+        const number = parseInt(matchGreen[0], 10);
+        return number <= maxValueGreen;
+      }if (matchRed) {
+        const number = parseInt(matchRed[0], 10);
+        return number <= maxValueRed;
+      }
+      return false;
+    })
+  );
+
+  if (filteredSubarray.some((subarray) => subarray.length > 0)) {
+    testNumbers.push(filteredSubarray);
   }
 }
 
+console.log(testNumbers);
 
+// let Blue = [];
+// const regexBlue = /(\d{1,2}\sblue)/g;
 
+// // Here, the map function retains the structure of the original array, not extracting it to the upper array.
+// for (let i = 0; i < subsetsGamesArray.length; i++) {
+//   let filteredSubarray = subsetsGamesArray[i].map(innerArray =>
+//     innerArray.filter(str => str.match(regexBlue))
+//   );
 
+//   if (filteredSubarray.some(subarray => subarray.length > 0)) {
+//     Blue.push(filteredSubarray);
+//   }
+// }
+// console.log(Blue)
 
+// let test = subsetsGames.filter(num => num.toString().match(/(\d{1,2}\sblue)/g))
+// console.log(test)
 
-let onlyGreens = [];
-for (let greens in puzzleList) {
-  let regex = puzzleList[greens].match(/(\d*\s+green)/g);
-  onlyGreens.push(regex);
+//Tranforma os numeros de strings para numeros dentro da array
+// let BluesNumbers = [];
+// for (index in Blue) {
+//   let newArray = Blue[index].map((item) => parseInt(item));
+//   BluesNumbers.push(newArray);
+// }
+// console.log(BluesNumbers)
+
+// let socorroBlues = [];
+// for (index in BluesNumbers) {
+//   let sumBlues = BluesNumbers[index].reduce((accumulator, currentValue) => {
+//     return accumulator + currentValue;
+//   }, 0);
+
+//   socorroBlues.push(sumBlues);
+// }
+
+// let finalBlueGameNumber = [];
+// for (index in socorroBlues) {
+//   if (socorroBlues[index] <= 14) {
+//     finalBlueGameNumber.push(parseInt(index) + 1);
+//   }
+// }
+// console.log(finalBlueGameNumber);
+
+//GREENS
+let Green = [];
+const regexGreen = /(\d{1,2}\sgreen)/g;
+
+for (let i = 0; i < subsetsGamesArray.length; i++) {
+  let filteredSubarray = subsetsGamesArray[i].map((innerArray) =>
+    innerArray.filter((str) => str.match(regexGreen))
+  );
+
+  if (filteredSubarray.some((subarray) => subarray.length > 0)) {
+    Green.push(filteredSubarray);
+  }
 }
+//console.log(Green)
 
-let onlyReds = [];
-for (let reds in puzzleList) {
-  let regex = puzzleList[reds].match(/(\d*\s+red)/g);
-  // onlyReds.push(`Game ${[parseInt(reds)+1]}: ${regex}`);
-  onlyReds.push(regex);
+//REDS
+let Red = [];
+const regexRed = /(\d{1,2}\sred)/g;
+
+for (let i = 0; i < subsetsGamesArray.length; i++) {
+  let filteredSubarray = subsetsGamesArray[i].map((innerArray) =>
+    innerArray.filter((str) => str.match(regexRed))
+  );
+
+  if (filteredSubarray.some((subarray) => subarray.length > 0)) {
+    Red.push(filteredSubarray);
+  }
 }
+//console.log(Red)
+
+// let test = subsetsGamesArray[0][2].filter((str) =>
+//   str.toString().match(regexBlue)
+// );
+
+// function getSum() {
+//   let newArray = []
+//  if (blueNumber <= 14 & greenNumber <=13 & redNumber <= 12) {
+//   newArray.push(index)
+//  }
+// }
+
+// coloca todos os numeros + a palavra blue dentro de uma string
+// let Blues = [];
+
+// for (let index in subsetsGamesArray) {
+//   let arrayOne = subsetsGamesArray[index];
+//   for (indexTwo in arrayOne) {
+//     let regex = arrayOne[indexTwo].map((str) => str.match(/(\d*\s+blue)/g));
+
+//     if (regex[indexTwo] !== null) {
+//       Blues.push(regex);
+//     }
+//   }
+// }
+// console.log(Blues);
+
+// let BluesString = [];
+// for (let index in Blues) {
+//   let newRegex = Blues[index].toString().match(/\d{1,2}/g);
+
+//   BluesString.push(newRegex);
+// }
+// //console.log(BluesString)
+
+// //Tranforma os numeros de strings para numeros dentro da array
+// let BluesNumbers = [];
+// for (index in BluesString) {
+//   let newArray = BluesString[index].map((item) => parseInt(item));
+//   BluesNumbers.push(newArray);
+// }
+// //console.log(BluesNumbers)
+
+// let socorroBlues = [];
+// for (index in BluesNumbers) {
+//   let sumBlues = BluesNumbers[index].reduce((accumulator, currentValue) => {
+//     return accumulator + currentValue;
+//   }, 0);
+
+//   socorroBlues.push(sumBlues);
+// }
+
+// let finalBlueGameNumber = [];
+// for (index in socorroBlues) {
+//   if (socorroBlues[index] <= 14) {
+//     finalBlueGameNumber.push(parseInt(index) + 1);
+//   }
+// }
+// console.log(finalBlueGameNumber);
+
+// // GREENS
+// let Greens = [];
+// for (let greens in puzzleList) {
+//   let regex = puzzleList[greens].match(/(\d*\s+green)/g);
+//   Greens.push(regex);
+// }
+
+// let GreenString = [];
+// for (let index in Greens) {
+//   let newRegex = Greens[index].toString().match(/\d{1,2}/g);
+
+//   GreenString.push(newRegex);
+// }
+
+// let GreenNumbers = [];
+// for (index in GreenString) {
+//   let newArray = GreenString[index].map((item) => parseInt(item));
+//   GreenNumbers.push(newArray);
+// }
+
+// let socorroGreens = [];
+// for (index in GreenNumbers) {
+//   let sumGreens = GreenNumbers[index].reduce((accumulator, currentValue) => {
+//     return accumulator + currentValue;
+//   }, 0);
+
+//   socorroGreens.push(sumGreens);
+// }
+
+// let finalGreenGameNumber = [];
+// for (index in socorroGreens) {
+//   if (socorroGreens[index] <= 13) {
+//     finalGreenGameNumber.push(parseInt(index) + 1);
+//   }
+// }
+// console.log(finalGreenGameNumber);
+
+// //REDS
+// let Reds = [];
+// for (let reds in puzzleList) {
+//   let regex = puzzleList[reds].match(/(\d*\s+red)/g);
+
+//   Reds.push(regex);
+// }
+
+// let RedString = [];
+// for (let index in Reds) {
+//   let newRegex = Blues[index].toString().match(/\d{1,2}/g);
+
+//   RedString.push(newRegex);
+// }
+
+// let RedNumbers = [];
+// for (index in RedString) {
+//   let newArray = RedString[index].map((item) => parseInt(item));
+//   RedNumbers.push(newArray);
+// }
+
+// let socorroRed = [];
+// for (index in RedNumbers) {
+//   let sumBlues = RedNumbers[index].reduce((accumulator, currentValue) => {
+//     return accumulator + currentValue;
+//   }, 0);
+
+//   socorroRed.push(sumBlues);
+// }
+
+// let finalRedGameNumber = [];
+// for (index in socorroRed) {
+//   if (socorroRed[index] <= 12) {
+//     finalRedGameNumber.push(parseInt(index) + 1);
+//   }
+// }
+// console.log(finalRedGameNumber);
+
+// //RESULT
+// let concatAllFinalGames = finalBlueGameNumber.concat(
+//   finalGreenGameNumber,
+//   finalRedGameNumber
+// );
+// console.log(concatAllFinalGames)
+
+// function filterNumbersAppearingThreeTimes(arr) {
+//   const numberCount = {};
+
+//   // Count occurrences of each number in the array
+//   arr.forEach(num => {
+//     if (numberCount[num]) {
+//       numberCount[num]++;
+//     } else {
+//       numberCount[num] = 1;
+//     }
+//   });
+
+//   // Filter numbers that appear exactly three times
+//   const numbersAppearingThreeTimes = Object.keys(numberCount).filter(
+//     num => numberCount[num] === 3
+//   );
+
+//   return numbersAppearingThreeTimes.map(Number); // Convert back to numbers if needed
+// }
+
+// const finalResult = filterNumbersAppearingThreeTimes(concatAllFinalGames).reduce((accumulator, currentValue) => {
+//   return accumulator + currentValue;
+// }, 0);
+// console.log(finalResult)
+
+// // 538 tá errado (too low). fazer de novo.
