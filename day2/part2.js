@@ -100,48 +100,25 @@ Game 99: 1 blue, 2 green, 2 red; 2 red, 8 green; 14 green, 1 blue; 1 red, 2 gree
 Game 100: 6 green, 15 red, 12 blue; 9 red; 16 red; 17 red, 3 blue, 7 green`;
 
 let puzzleList = inputPuzzle.replace(/\Game\s+\d{1,3}\:/g, "").split("\n");
+console.log({ puzzleList });
 
-const maxValueBlue = 14;
-const maxValueGreen = 13;
-const maxValueRed = 12;
-const regexNumberBlue = /(\d+)\sblue/;
+let blueArray = [];
+console.log(blueArray);
+
+let greenArray = [];
+let redArray = [];
+const onlyDigitsRegex = /\d+/g;
+const regexNumberBlue = /(\d+)\sblue/g;
 const regexNumberGreen = /(\d+)\sgreen/;
 const regexNumberRed = /(\d+)\sred/;
 
-let sumPossibleGames = 0;
-
 puzzleList.forEach((game, currentGameIndex) => {
-  let handfulls = game.split(";");
-  let isGamePossible = true;
-
-  handfulls.forEach((handfull) => {
-    const matchBlue = handfull.match(regexNumberBlue);
-    const matchGreen = handfull.match(regexNumberGreen);
-    const matchRed = handfull.match(regexNumberRed);
-
-    if (matchBlue) {
-      const number = parseInt(matchBlue[1], 10);
-      if (number > maxValueBlue) {
-        isGamePossible = false;
-      }
-    }
-    if (matchGreen) {
-      const number = parseInt(matchGreen[1], 10);
-      if (number > maxValueGreen) {
-        isGamePossible = false;
-      }
-    }
-    if (matchRed) {
-      const number = parseInt(matchRed[1], 10);
-      if (number > maxValueRed) {
-        isGamePossible = false;
-      }
-    }
-  });
-
-  if (isGamePossible) {
-    sumPossibleGames += currentGameIndex + 1;
-  }
+  const bluesList = game.match(regexNumberBlue).join(" ");
+  //console.log(bluesList)
+  const bluesStrings = bluesList.match(onlyDigitsRegex);
+  //console.log(bluesStrings)
+  const blueNum = bluesStrings.map(Number);
+  //console.log(blueNum)
+  const highestBlue = Math.max(...blueNum);
+  blueArray.push(highestBlue);
 });
-
-console.log(sumPossibleGames);
