@@ -103,22 +103,48 @@ let puzzleList = inputPuzzle.replace(/\Game\s+\d{1,3}\:/g, "").split("\n");
 console.log({ puzzleList });
 
 let blueArray = [];
-console.log(blueArray);
-
 let greenArray = [];
 let redArray = [];
+
 const onlyDigitsRegex = /\d+/g;
 const regexNumberBlue = /(\d+)\sblue/g;
-const regexNumberGreen = /(\d+)\sgreen/;
-const regexNumberRed = /(\d+)\sred/;
+const regexNumberGreen = /(\d+)\sgreen/g;
+const regexNumberRed = /(\d+)\sred/g;
 
 puzzleList.forEach((game, currentGameIndex) => {
-  const bluesList = game.match(regexNumberBlue).join(" ");
-  //console.log(bluesList)
-  const bluesStrings = bluesList.match(onlyDigitsRegex);
-  //console.log(bluesStrings)
-  const blueNum = bluesStrings.map(Number);
-  //console.log(blueNum)
+  // BLUE
+  const blueList = game.match(regexNumberBlue).join(" ");
+  const blueStrings = blueList.match(onlyDigitsRegex);
+  const blueNum = blueStrings.map(Number);
   const highestBlue = Math.max(...blueNum);
   blueArray.push(highestBlue);
+
+  // GREEN
+  const greenList = game.match(regexNumberGreen).join(" ");
+  const greenStrings = greenList.match(onlyDigitsRegex);
+  const greenNum = greenStrings.map(Number);
+  const highestGreen = Math.max(...greenNum);
+  greenArray.push(highestGreen);
+
+  // RED
+  const redList = game.match(regexNumberRed).join(" ");
+  const redStrings = redList.match(onlyDigitsRegex);
+  const redNum = redStrings.map(Number);
+  const highestRed = Math.max(...redNum);
+  redArray.push(highestRed);
 });
+
+let resultMultypliedArray = [];
+console.log(resultMultypliedArray);
+
+for (game in blueArray) {
+  let product = blueArray[game] * greenArray[game] * redArray[game];
+  resultMultypliedArray.push(product);
+}
+
+const finalSum = resultMultypliedArray.reduce((acc, currValue) => {
+  return acc + currValue;
+}, 0);
+
+console.log(finalSum);
+// Done. Sum is 69929.
