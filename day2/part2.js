@@ -102,40 +102,34 @@ Game 100: 6 green, 15 red, 12 blue; 9 red; 16 red; 17 red, 3 blue, 7 green`;
 let puzzleList = inputPuzzle.replace(/\Game\s+\d{1,3}\:/g, "").split("\n");
 console.log({ puzzleList });
 
-let blueArray = [];
-let greenArray = [];
-let redArray = [];
+const blueArray = [];
+const greenArray = [];
+const redArray = [];
+const resultMultypliedArray = [];
 
 const onlyDigitsRegex = /\d+/g;
 const regexNumberBlue = /(\d+)\sblue/g;
 const regexNumberGreen = /(\d+)\sgreen/g;
 const regexNumberRed = /(\d+)\sred/g;
 
-puzzleList.forEach((game, currentGameIndex) => {
-  // BLUE
+puzzleList.forEach((game, color) => {
   const blueList = game.match(regexNumberBlue).join(" ");
-  const blueStrings = blueList.match(onlyDigitsRegex);
-  const blueNum = blueStrings.map(Number);
-  const highestBlue = Math.max(...blueNum);
-  blueArray.push(highestBlue);
-
-  // GREEN
   const greenList = game.match(regexNumberGreen).join(" ");
-  const greenStrings = greenList.match(onlyDigitsRegex);
-  const greenNum = greenStrings.map(Number);
-  const highestGreen = Math.max(...greenNum);
-  greenArray.push(highestGreen);
-
-  // RED
   const redList = game.match(regexNumberRed).join(" ");
-  const redStrings = redList.match(onlyDigitsRegex);
-  const redNum = redStrings.map(Number);
-  const highestRed = Math.max(...redNum);
-  redArray.push(highestRed);
-});
 
-let resultMultypliedArray = [];
-console.log(resultMultypliedArray);
+  if (blueList) {
+    const bluesNum = blueList.match(onlyDigitsRegex).map(Number);
+    blueArray.push(Math.max(...bluesNum));
+  }
+  if (greenList) {
+    const greensNum = greenList.match(onlyDigitsRegex).map(Number);
+    greenArray.push(Math.max(...greensNum));
+  }
+  if (redList) {
+    const redsNum = redList.match(onlyDigitsRegex).map(Number);
+    redArray.push(Math.max(...redsNum));
+  }
+});
 
 for (game in blueArray) {
   let product = blueArray[game] * greenArray[game] * redArray[game];
