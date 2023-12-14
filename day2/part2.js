@@ -112,7 +112,7 @@ const regexNumberBlue = /(\d+)\sblue/g;
 const regexNumberGreen = /(\d+)\sgreen/g;
 const regexNumberRed = /(\d+)\sred/g;
 
-puzzleList.forEach((game, color) => {
+puzzleList.forEach((game) => {
   const blueList = game.match(regexNumberBlue).join(" ");
   const greenList = game.match(regexNumberGreen).join(" ");
   const redList = game.match(regexNumberRed).join(" ");
