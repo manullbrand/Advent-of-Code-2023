@@ -140,21 +140,25 @@ const input = `.....487.599...........411.......................................
 ......696..................................................753......................957.715.............396..159...........338.......806....`;
 
 const inputArray = input.split("\n");
-console.log(inputArray[0][5]);
+console.log(inputArray);
 
 const regexFindNumber = /(\d+)/g;
+
 const regexSymbols = /[#*@&+=%$\-\/]/g;
 const regexSymAndNum =
   /(\d+)[#*@&+=%$\-\/](\d+)|[#*@&+=%$\-\/](\d+)|(\d+)[#*@&+=%$\-\/]|[#*@&+=%$\-\/](\d+)[#*@&+=%$\-\/]/g;
 const arrayNumbers = [];
 //console.log(arrayNumbers);
 const arrayNumPreceededbySym = [];
-console.log(arrayNumPreceededbySym);
 const onlyDigitsRegex = /\d+/g;
 
+const arrayNumLinkedtoSym = [];
+//console.log(arrayNumLinkedtoSym)
+
 inputArray.forEach((line) => {
+  //console.log(line);
   const findNumber = line.match(regexFindNumber);
-  //console.log(findNumber[0]);
+  //console.log(findNumber);
   const findSymAndNum = line.match(regexSymAndNum);
   //console.log(findSymAndNum);
   const findSymbol = line.match(regexSymbols);
@@ -162,16 +166,73 @@ inputArray.forEach((line) => {
 
   //Fiding the numbers followed by symbols within the lines:
   if (findSymAndNum) {
-    const onlyDigit = findSymAndNum.toString().match(onlyDigitsRegex);
-    arrayNumPreceededbySym.push(onlyDigit);
+    const onlyDigits = findSymAndNum.toString().match(onlyDigitsRegex);
+    arrayNumPreceededbySym.push(onlyDigits);
   }
 
   //Fiding the numbers with symbols in the array under them:
-  // Se o numero na linha (line) 0, posição 5, tiver um símbolo na linha 1, posiçao 5-1 ou 5+1, quero colocar esse número em uma array
+  // Se o numero na linha (line) 0, posição 5, tiver um símbolo próximo na linha 1, posiçao 5-1, 5, ou 5+1, quero colocar esse número em uma array
+
+  let arrayDiffLines = []
+console.log(arrayDiffLines)
+
+  for (let i = 0; i < inputArray.length - 1; i++) {
+    for (let j = 0; j < line.length; j++) {
+
+      // Add a check to ensure i+1 is within bounds
+      if (i + 1 < inputArray.length) {
+        let testResult = (
+          line[j].match(regexFindNumber) &&
+          (
+            (inputArray[i + 1][j - 1] && inputArray[i + 1][j - 1].match(regexSymbols)) ||
+            (inputArray[i + 1][j] && inputArray[i + 1][j].match(regexSymbols)) ||
+            (inputArray[i + 1][j + 1] && inputArray[i + 1][j + 1].match(regexSymbols))
+          )
+        );
+  
+        //** Da forma como está codado aqui, SÓ ESTÁ PEGANDO o número em contato direto com essa lógica. Quero que pegue o bloco inteiro dos número, se APENAS um tiver contato com o símbolo.***
+
+
+        // Use the result of the test as needed
+        if (testResult) {
+          //console.log(`Match found at indices ${i},${j}`);
+          arrayDiffLines.push(line[j].match(regexFindNumber))
+          // Do something with the match
+        }
+      }
+    }
+  }
 
 
 });
 
+const arrayOnlyNumPreceededbySum = [];
+//console.log(arrayOnlyNumPreceededbySum);
 
-const sum = arrayNumPreceededbySym.reduce((acc, currValue) => acc + currValue, 0)
-//console.log(sum)
+for (index in arrayNumPreceededbySym) {
+  let convertingStringtoNumber = arrayNumPreceededbySym[index].map((str) =>
+    parseInt(str, 10)
+  );
+  arrayOnlyNumPreceededbySum.push(convertingStringtoNumber);
+}
+
+const eachArrayNumFollowedBySymbol = [];
+//console.log(eachArrayNumFollowedBySymbol);
+
+for (index in arrayOnlyNumPreceededbySum) {
+  let sumEachArray = arrayOnlyNumPreceededbySum[index].reduce(
+    (acc, currValue) => acc + currValue,
+    0
+  );
+  eachArrayNumFollowedBySymbol.push(sumEachArray);
+}
+
+let totalSumWithSymWithinLine = 0;
+
+for (key in eachArrayNumFollowedBySymbol) {
+  if (eachArrayNumFollowedBySymbol.hasOwnProperty(key)) {
+    totalSumWithSymWithinLine += eachArrayNumFollowedBySymbol[key];
+  }
+}
+//console.log(totalSumWithSymWithinLine);
+//93180
