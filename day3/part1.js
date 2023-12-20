@@ -140,21 +140,20 @@ const input = `.....487.599...........411.......................................
 ......696..................................................753......................957.715.............396..159...........338.......806....`;
 
 const inputArray = input.split("\n");
-//console.log(inputArray);
+console.log({ inputArray });
 
 const regexFindNumber = /(\d+)/g;
 const regexSymbols = /[#*@&+=%$\-\/]/g;
 const regexSymAndNum =
   /(\d+)[#*@&+=%$\-\/](\d+)|[#*@&+=%$\-\/](\d+)|(\d+)[#*@&+=%$\-\/]|[#*@&+=%$\-\/](\d+)[#*@&+=%$\-\/]/g;
-const arrayNumbers = [];
-//console.log(arrayNumbers);
+
 const arrayNumPreceededbySym = [];
 //console.log(arrayNumPreceededbySym)
 const onlyDigitsRegex = /\d+/g;
 const regexDotandNum = /[.](\d+)|(\d+)[.]/g;
 
-const arrayNumLinkedtoSym = [];
-//console.log(arrayNumLinkedtoSym)
+const uniqueArray = []
+
 
 inputArray.forEach((line, lineIndex) => {
   //console.log(line);
@@ -173,18 +172,22 @@ inputArray.forEach((line, lineIndex) => {
   // Se o numero na linha (line) 0, posição 5, tiver um símbolo próximo na linha 1, posiçao 5-1, 5, ou 5+1, quero colocar esse número em uma array
 
   let arrayDiffLines = [];
-  console.log(arrayDiffLines);
+  //console.log({ arrayDiffLines });
 
-  // essa lógica aqui embaixo não está pegando os números COM SÍMBOLOS EM CIMA, SÓ EMBAIXO
-  for (let i = 0; i < 140; i++) {
-    if (lineIndex + 1 < inputArray.length) {
+  // essa lógica aqui embaixo não está pegando as duas primeiras arrays do inputArray, e nem a última (line[0], line[1] e line[139])
+  for (let i = 0; i < inputArray.length; i++) {
+    if (lineIndex + 1 < inputArray.length && lineIndex - 1 >= 0) {
       let nextLine = inputArray[lineIndex + 1];
+      let prevLine = inputArray[lineIndex - 1];
 
       let testResult =
         line[i].match(regexFindNumber) &&
         ((nextLine[i - 1] && nextLine[i - 1].match(regexSymbols)) ||
           (nextLine[i] && nextLine[i].match(regexSymbols)) ||
-          (nextLine[i + 1] && nextLine[i + 1].match(regexSymbols)));
+          (nextLine[i + 1] && nextLine[i + 1].match(regexSymbols)) ||
+          (prevLine[i - 1] && prevLine[i - 1].match(regexSymbols)) ||
+          (prevLine[i] && prevLine[i].match(regexSymbols)) ||
+          (prevLine[i + 1] && prevLine[i + 1].match(regexSymbols)));
 
       if (testResult) {
         let startIndex = i;
@@ -200,23 +203,45 @@ inputArray.forEach((line, lineIndex) => {
         }
 
         let entireNumberBlock = line.slice(startIndex, endIndex);
-        arrayDiffLines.push(entireNumberBlock);
+        arrayDiffLines.push(parseInt(entireNumberBlock));
       }
     }
   }
 
-  // const uniqueArrayDifLines = [];
+  const uniqueArrayDifLines = [...new Set(arrayDiffLines)];
+  //console.log({ uniqueArrayDifLines });
 
-  // for (index in arrayDiffLines) {
-  //   let convertingStringtoNumber = arrayDiffLines[index].map((str) =>
-  //     parseInt(str, 10)
-  //   );
+  uniqueArray.push(uniqueArrayDifLines)
 
-  //   uniqueArrayDifLines.push(convertingStringtoNumber);
-  // }
-  // let uniqueArrayDifLines = [...new Set(arrayDiffLines)];
-  //console.log(uniqueArrayDifLines);
+  // let sumLines = uniqueArrayDifLines.reduce(
+  //   (acc, currValue) => acc + currValue,
+  //   0
+  // );
+
+  
 });
+
+console.log(uniqueArray)
+
+let arrayLines = []
+//console.log(arrayLines);
+
+for (index in uniqueArray) {
+let sumLines = uniqueArray[index].reduce((acc, curr) => acc + curr, 0);
+arrayLines.push(sumLines)
+}
+
+let totalSumWithSymBetweenLine = 0;
+
+for (key in arrayLines) {
+  if (arrayLines.hasOwnProperty(key)) {
+    totalSumWithSymBetweenLine += arrayLines[key];
+  }
+}
+
+console.log(totalSumWithSymBetweenLine)
+//426328 not considering the first and the last lines.
+
 
 
 
