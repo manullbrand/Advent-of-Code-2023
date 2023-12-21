@@ -1,4 +1,5 @@
-const input = `.....487.599...........411...........................................574..679.136..........................30......255.......432............
+const input = (`\
+.....487.599...........411...........................................574..679.136..........................30......255.......432............
 ....*......*............*..........&586..........................375...@..*....../.....835.............610*........./...............582.....
 ...833........304...&.862...............203..........922.125...............819.............@....563.....................722..775............
 ..............+...994..........#.........*..244.457.....*...........867.........829.....469.....#...........................*...............
@@ -137,33 +138,29 @@ const input = `.....487.599...........411.......................................
 .....304..873*633.382.....+............179.............410.......572.........................999...$...106.....+543.....421..887............
 ..........................997....925....*........153......*.383...*..50*.............585.102..........@........................*......199...
 .......................................645.1.......+...622.....$.720....518...........*...*.................#........@303.......286.........
-......696..................................................753......................957.715.............396..159...........338.......806....`;
+......696..................................................753......................957.715.............396..159...........338.......806....`);
 
 const inputArray = input.split("\n");
 console.log({ inputArray });
 
+
 const regexFindNumber = /(\d+)/g;
-const regexSymbols = /[#*@&+=%$\-\/]/g;
+const regexSymbols = /[^0-9.]/g;
 const regexSymAndNum =
-  /(\d+)[#*@&+=%$\-\/](\d+)|[#*@&+=%$\-\/](\d+)|(\d+)[#*@&+=%$\-\/]|[#*@&+=%$\-\/](\d+)[#*@&+=%$\-\/]/g;
+  /(\d+)[^0-9.](\d+)|[^0-9.](\d+)|(\d+)[^0-9.]|[^0-9.](\d+)[^0-9.]/g;
 
 const arrayNumPreceededbySym = [];
 //console.log(arrayNumPreceededbySym)
-const onlyDigitsRegex = /\d+/g;
-const regexDotandNum = /[.](\d+)|(\d+)[.]/g;
-
-const uniqueArray = []
-
+const uniqueArray = [];
 
 inputArray.forEach((line, lineIndex) => {
   //console.log(line);
-
   const findSymAndNum = line.match(regexSymAndNum);
   //console.log(findSymAndNum);
 
   //Fiding the numbers followed by symbols within the lines:
   if (findSymAndNum) {
-    const onlyDigits = findSymAndNum.toString().match(onlyDigitsRegex);
+    const onlyDigits = findSymAndNum.toString().match(regexFindNumber);
     //console.log(onlyDigits)
     arrayNumPreceededbySym.push(onlyDigits);
   }
@@ -174,7 +171,7 @@ inputArray.forEach((line, lineIndex) => {
   let arrayDiffLines = [];
   //console.log({ arrayDiffLines });
 
-  // essa lógica aqui embaixo não está pegando as duas primeiras arrays do inputArray, e nem a última (line[0], line[1] e line[139])
+  // essa lógica aqui embaixo não está pegando as duas primeiras arrays do inputArray, e nem a última (line[0] e line[139])
   for (let i = 0; i < inputArray.length; i++) {
     if (lineIndex + 1 < inputArray.length && lineIndex - 1 >= 0) {
       let nextLine = inputArray[lineIndex + 1];
@@ -211,44 +208,30 @@ inputArray.forEach((line, lineIndex) => {
   const uniqueArrayDifLines = [...new Set(arrayDiffLines)];
   //console.log({ uniqueArrayDifLines });
 
-  uniqueArray.push(uniqueArrayDifLines)
-
-  // let sumLines = uniqueArrayDifLines.reduce(
-  //   (acc, currValue) => acc + currValue,
-  //   0
-  // );
-
-  
+  uniqueArray.push(uniqueArrayDifLines);
 });
 
-console.log(uniqueArray)
+console.log(uniqueArray);
 
-let arrayLines = []
-//console.log(arrayLines);
+let arrayLines = [];
+
 
 for (index in uniqueArray) {
-let sumLines = uniqueArray[index].reduce((acc, curr) => acc + curr, 0);
-arrayLines.push(sumLines)
+  let sumLines = uniqueArray[index].reduce((acc, curr) => acc + curr, 0);
+  arrayLines.push(sumLines);
 }
 
-let totalSumWithSymBetweenLine = 0;
 
-for (key in arrayLines) {
-  if (arrayLines.hasOwnProperty(key)) {
-    totalSumWithSymBetweenLine += arrayLines[key];
-  }
-}
-
-console.log(totalSumWithSymBetweenLine)
+let arrayBetweenLines = arrayLines.reduce((acc, curr) => acc + curr, 0);
+//console.log({arrayBetweenLines});
 //426328 not considering the first and the last lines.
-
 
 
 
 
 //Fiding the numbers followed by symbols within the lines:
 const arrayOnlyNumPreceededbySum = [];
-//console.log(arrayOnlyNumPreceededbySum);
+
 
 for (index in arrayNumPreceededbySym) {
   let convertingStringtoNumber = arrayNumPreceededbySym[index].map((str) =>
@@ -256,9 +239,11 @@ for (index in arrayNumPreceededbySym) {
   );
   arrayOnlyNumPreceededbySum.push(convertingStringtoNumber);
 }
+console.log(arrayOnlyNumPreceededbySum);
+
 
 const eachArrayNumFollowedBySymbol = [];
-//console.log(eachArrayNumFollowedBySymbol);
+
 
 for (index in arrayOnlyNumPreceededbySum) {
   let sumEachArray = arrayOnlyNumPreceededbySum[index].reduce(
@@ -267,13 +252,13 @@ for (index in arrayOnlyNumPreceededbySum) {
   );
   eachArrayNumFollowedBySymbol.push(sumEachArray);
 }
+console.log(eachArrayNumFollowedBySymbol);
 
-let totalSumWithSymWithinLine = 0;
+let arrayWithinLines = eachArrayNumFollowedBySymbol.reduce(
+  (acc, currValue) => acc + currValue,
+  0
+);
 
-for (key in eachArrayNumFollowedBySymbol) {
-  if (eachArrayNumFollowedBySymbol.hasOwnProperty(key)) {
-    totalSumWithSymWithinLine += eachArrayNumFollowedBySymbol[key];
-  }
-}
-//console.log(totalSumWithSymWithinLine);
+console.log(arrayWithinLines+arrayBetweenLines+3171+1831);
 //93180
+//O valor final certo 525119
