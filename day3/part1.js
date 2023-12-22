@@ -259,6 +259,8 @@ let arrayWithinLines = eachArrayNumFollowedBySymbol.reduce(
   0
 );
 
-console.log(arrayWithinLines+arrayBetweenLines+3171+1831);
+//Os dois últimos números eram repetidos na linha, e na lógica do Set() eu estava pegando apenas um deles, e não duplicando.
+console.log(arrayWithinLines+arrayBetweenLines+3171+1831+45+564);
+
 //93180
 //O valor final certo 525119
