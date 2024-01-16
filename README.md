@@ -46,7 +46,7 @@ The folder structure for each day might look like this:
 ```lua
 day01/
 |-- instructionsX.txt
-|-- partX.js
+|-- part1.js
 |-- part2.js
 |-- README.md
 
@@ -56,4 +56,3 @@ day01/
 - partX.js: JavaScript file containing the solution for Part X. Change the X to get the matching part of the challenge your are looking for.
 - README.md: Documentation for the day's challenge, including instructions and any additional notes.
 
-## Additional Notes 📝
